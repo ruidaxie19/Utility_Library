@@ -1,0 +1,60 @@
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Binary_Tree:
+    def __init__(self, A = [0]):
+		# construct binary tree using list
+		# e.g. [5, 2, 7, None, 4, None, 9, 3, None, None, None] translates to
+		#					5
+		#			2				7
+		#		None	4		None	9
+		#			  3	None		None None
+	
+        self.L = A
+        n = len(A)
+        if n == 0:
+            raise ValueError('Cannot create empty tree.')
+            
+        self.root = TreeNode(A[0])
+        
+        lvl = [self.root]
+        idx = 1
+        
+        while idx < n:
+            tmp = []
+            for i in range(len(lvl) * 2):
+                if A[idx] is not None:
+                    tmp.append(TreeNode(A[idx]))
+                    quo, rem = divmod(i, 2)
+                    if rem == 0:
+                        lvl[quo].left = tmp[-1]
+                    else:
+                        lvl[quo].right =tmp[-1]
+                idx += 1
+            lvl = tmp
+        return
+
+def inorder_traversal(root):
+    stack = [root]
+    res = []
+    while stack:
+        while stack[-1].left:
+            stack.append(stack[-1].left)
+        else:
+            while stack and not stack[-1].right:
+                res.append(stack.pop().val)
+            else:
+                if stack:
+                    cur = stack.pop()
+                    res.append(cur.val)
+                    stack.append(cur.right)
+    return res
+	
+	
+# Driver
+Tree = Binary_Tree([5, 2, 7, None, 4, None, 9, 3, None, None, None])
+
+print(inorder_traversal(Tree.root))
