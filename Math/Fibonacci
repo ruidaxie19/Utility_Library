@@ -1,0 +1,8 @@
+def fibo(n):
+	# 1, 1, 2, 3, 5, 8, ...
+	if n <= 2:
+		return 1
+	cur = [1, 1]
+	for i in range(n - 2):
+		cur = [cur[1], sum(cur)]
+	return cur[1]
