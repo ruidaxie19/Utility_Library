@@ -1,0 +1,35 @@
+import math
+import bisect
+
+class prime_number_utilities:
+    def __init__(self):
+        # small prime numbers
+        self.primes = [2, 3, 5, 7, 11]
+        
+    def Sieve_of_Eratosthenes(self, n):
+        # efficiently get the list of all primes under n
+        if n <= self.primes[-1]:
+            return self.primes[:bisect.bisect_right(self.primes, n)]
+        
+        res = self.primes + list(range(self.primes[-1] + 1, n + 1))
+        
+        idx = 0
+        while idx < len(res):
+            to_delete = res[idx] ** 2
+            while to_delete <= n:
+                if to_delete in res:
+                    res.remove(to_delete)
+                to_delete += res[idx]
+            idx += 1
+        self.primes = res
+        return res
+        
+    def isPrime(self, n):
+        # test if n is prime with certainty
+        if n <= self.primes[-1]:
+            return n in self.primes
+        primes_test = self.Sieve_of_Eratosthenes(int(math.sqrt(n)))
+        for p in primes_test:
+            if n % p == 0:
+                return False
+        return True
